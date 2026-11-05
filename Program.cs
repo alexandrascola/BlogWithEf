@@ -1,4 +1,16 @@
+using BlogWithEf.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Handle the data directory
+var dataDir = Path.Combine(builder.Environment.ContentRootPath, "data");
+Directory.CreateDirectory(dataDir);
+
+//Create the SQLite connection
+builder.Services.AddDbContext<BlogDbContext>(options =>
+options.UseSqlite($"Data Source={Path.Combine(dataDir, "blog.db")}"));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
